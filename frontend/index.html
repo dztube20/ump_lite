@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMP – Universal Media Downloader</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0d1117; color: #e6edf3; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { font-size: 2.2rem; background: linear-gradient(135deg, #58a6ff, #f0883e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { color: #8b949e; margin-bottom: 1.5em; }
+        .url-section { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        #url-input { flex: 1; min-width: 200px; padding: 12px 16px; background: #161b22; border: 1px solid #30363d; border-radius: 8px; color: #e6edf3; font-size: 1rem; }
+        #url-input:focus { border-color: #58a6ff; }
+        #fetch-btn { padding: 12px 24px; background: #238636; border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; }
+        #fetch-btn:hover { background: #2ea043; }
+        .sample-links { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; }
+        .sample-link { background: #161b22; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; color: #58a6ff; cursor: pointer; border: 1px solid #30363d; }
+        .sample-link:hover { background: #1f2937; border-color: #58a6ff; }
+
+        #formats-container { margin-bottom: 20px; }
+        .format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+        .format-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 12px; }
+        .format-card .badge { font-size: 0.7rem; padding: 2px 10px; border-radius: 12px; background: #30363d; display: inline-block; }
+        .badge.both { background: #2ea043; color: white; }
+        .badge.video { background: #1f6feb; color: white; }
+        .badge.audio { background: #9e6a03; color: white; }
+        .format-quality { font-weight: 600; margin: 4px 0; }
+        .format-details { font-size: 0.85rem; color: #8b949e; display: flex; gap: 8px; flex-wrap: wrap; }
+        .format-select-btn { margin-top: 8px; padding: 4px 12px; background: #1f6feb; border: none; border-radius: 6px; color: white; cursor: pointer; width: 100%; }
+        .format-select-btn:hover { background: #388bfd; }
+        .error-msg { background: #3d1a1a; border: 1px solid #f85149; padding: 12px; border-radius: 8px; color: #f85149; }
+
+        /* Queue boxes */
+        .queue-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 20px; }
+        @media (max-width: 768px) { .queue-container { grid-template-columns: 1fr; } }
+        .queue-box { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 16px; }
+        .queue-box h3 { color: #8b949e; font-size: 0.9rem; margin-bottom: 12px; border-bottom: 1px solid #30363d; padding-bottom: 6px; }
+        .queue-box .count { color: #58a6ff; font-size: 0.8rem; }
+
+        .download-item { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 10px; margin-bottom: 8px; font-size: 0.85rem; }
+        .download-item .title { font-weight: 500; word-break: break-all; }
+        .download-item .progress-track { background: #21262d; border-radius: 20px; height: 6px; overflow: hidden; margin: 4px 0; }
+        .download-item .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #238636, #2ea043); transition: width 0.3s; }
+        .download-item .status { color: #8b949e; font-size: 0.8rem; }
+        .download-item .actions { margin-top: 4px; }
+        .download-item .actions button { background: #21262d; border: none; border-radius: 4px; color: #c9d1d9; padding: 2px 10px; cursor: pointer; font-size: 0.75rem; }
+        .download-item .actions .save-btn { background: #238636; color: white; }
+        .download-item .actions .save-btn:hover { background: #2ea043; }
+        .download-item .actions .retry-btn { background: #da3633; color: white; }
+        .download-item .actions .retry-btn:hover { background: #f85149; }
+        .download-item .error-text { color: #f85149; font-size: 0.8rem; }
+
+        #log-container { background: #0d1117; border: 1px solid #30363d; border-radius: 10px; padding: 12px; max-height: 200px; overflow-y: auto; font-size: 0.85rem; font-family: monospace; margin-top: 20px; }
+        .log-entry { padding: 2px 0; border-bottom: 1px solid #1c2333; }
+        .log-info { color: #8b949e; }
+        .log-success { color: #3fb950; }
+        .log-error { color: #f85149; }
+        #log-controls { display: flex; gap: 10px; margin: 10px 0; }
+        #log-controls button { background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 2px 14px; border-radius: 6px; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>⬇️ UMP</h1>
+        <p class="subtitle">Universal Media Downloader · Streaming · No temp files · Queue</p>
+    </header>
+
+    <div class="url-section">
+        <input type="text" id="url-input" placeholder="Paste video URL (YouTube, Rumble, etc.)" />
+        <button id="fetch-btn">🔍 Fetch Formats</button>
+    </div>
+
+    <div class="sample-links">
+        <a href="#" class="sample-link" data-url="https://www.youtube.com/watch?v=dQw4w9WgXcQ">🎵 YouTube</a>
+        <a href="#" class="sample-link" data-url="https://rumble.com/v7ev9l0-how-to-feel-more-alive-the-synergyo2-experience.html">🎬 Rumble</a>
+        <a href="#" class="sample-link" data-url="https://rumble.com/shorts/v7eygc6">📱 Rumble Short</a>
+    </div>
+
+    <div id="formats-container"></div>
+
+    <div class="queue-container">
+        <div class="queue-box" id="pending-box">
+            <h3>⏳ Pending <span class="count" id="pending-count">0</span></h3>
+            <div id="pending-list"></div>
+        </div>
+        <div class="queue-box" id="downloading-box">
+            <h3>📥 Downloading <span class="count" id="downloading-count">0/3</span></h3>
+            <div id="downloading-list"></div>
+        </div>
+        <div class="queue-box" id="completed-box">
+            <h3>✅ Completed <span class="count" id="completed-count">0</span></h3>
+            <div id="completed-list"></div>
+        </div>
+    </div>
+
+    <div id="log-controls">
+        <button id="export-log-btn">📋 Export Log</button>
+        <button id="clear-log-btn">🗑️ Clear Log</button>
+    </div>
+    <div id="log-container"></div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

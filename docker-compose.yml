@@ -1,0 +1,23 @@
+services:
+  ump:
+    build: .
+    container_name: ump
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5000:8000" # Keep private; publish through an HTTPS/auth reverse proxy.
+    environment:
+      UMP_MAX_CONCURRENT: "4"
+      UMP_JOB_TTL_SECONDS: "3600"
+      UMP_DOWNLOAD_DIR: /data
+      LOG_LEVEL: INFO
+    volumes:
+      - ump-downloads:/data
+    init: true
+    # Resource caps are a starting point; tune to your host and workload.
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 6G
+volumes:
+  ump-downloads:
