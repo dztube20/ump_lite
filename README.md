@@ -34,7 +34,7 @@ yt-dlp --version
 ffmpeg -version
 ```
 
-## 3. Run on one computer (beginner setup)
+## 3. Run on one computer (beginner/try setup)
 
 ### Linux / macOS
 
