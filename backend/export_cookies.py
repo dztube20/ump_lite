@@ -3,7 +3,7 @@ import browser_cookie3
 import os
 
 def export_bilibili_cookies():
-    # Try Chrome first, then Firefox
+    # Try Chrome first, then Firefox (don't use any script blocker)
     cookies = browser_cookie3.chrome(domain_name='bilibili.com')
     if not cookies:
         cookies = browser_cookie3.firefox(domain_name='bilibili.com')
@@ -12,7 +12,7 @@ def export_bilibili_cookies():
         return
 
     with open('cookies.txt', 'w') as f:
-        f.write("# Netscape HTTP Cookie File\n")
+        f.write("# Netscape HTTP Cookie File\n") 
         for cookie in cookies:
             f.write(f"{cookie.domain}\tTRUE\t{cookie.path}\t{bool(cookie.secure)}\t{int(cookie.expires) if cookie.expires else 0}\t{cookie.name}\t{cookie.value}\n")
     print("Cookies exported to cookies.txt")
