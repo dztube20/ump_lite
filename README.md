@@ -41,8 +41,8 @@ ffmpeg -version
 Clone this repo
 
 ```bash
-git clone https://github.com/zaynkhan100110/ump.git
-cd ump
+git clone https://github.com/zaynkhan100110/ump-lite.git
+cd ump-lite
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
