@@ -52,6 +52,9 @@ pip install -r backend/requirements.txt
 Install ffmpeg using your operating system package manager, for example:
 
 ```bash
+# Arch
+sudo pacman -S ffmpeg
+
 # Ubuntu / Debian
 sudo apt update
 sudo apt install -y ffmpeg
