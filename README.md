@@ -13,7 +13,7 @@ UMP is a small web app that uses **yt-dlp** to inspect media URLs, show availabl
 - `Dockerfile` and `docker-compose.yml` — container deployment.
 
 The API now uses yt-dlp's maintained extractor catalogue for metadata and downloads. That usually gives broader site coverage than maintaining a separate scraper for every website. A site's availability can still change at any time; private, age-restricted, geo-restricted, login-only or DRM-protected content may not work.
-
+ 
 ## 2. Requirements
 
 For a manual install:
