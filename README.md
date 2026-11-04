@@ -38,7 +38,7 @@ ffmpeg -version
 
 ### Linux / macOS
 
-Open a terminal and clone this repo
+Clone this repo
 
 ```bash
 git clone https://github.com/zaynkhan100110/ump.git
