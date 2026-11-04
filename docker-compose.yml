@@ -21,3 +21,5 @@ services:
           memory: 6G
 volumes:
   ump-downloads:
+
+  # keep 4x more storage and ram than needed (Don't use potato computer like me)
