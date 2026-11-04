@@ -1,5 +1,6 @@
 import re
 from urllib.parse import urlparse
+# this file is for detect the platform to show a bubble of the platform
 
 PLATFORM_PATTERNS = {
     'youtube': [r'youtube\.com', r'youtu\.be'],
