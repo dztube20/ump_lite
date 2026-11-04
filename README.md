@@ -1,6 +1,6 @@
 # UMP — Universal Media Downloader
 
-UMP is a small web app that uses **yt-dlp** to inspect media URLs, show available formats, queue downloads, report progress, and let a browser save the result.
+UMP is a web app that uses **yt-dlp** to inspect media URLs, show available formats, queue downloads, report progress, and let a browser save the result.
 
 > **Use it responsibly.** Download only content you own, have permission to download, or are legally allowed to save. Respect copyright, site terms, privacy, and regional law. Do not use this service to bypass DRM, paywalls, access controls, or private content.
 
