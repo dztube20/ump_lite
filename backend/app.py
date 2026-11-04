@@ -119,7 +119,7 @@ def worker(job_id):
            "--progress", "--socket-timeout", "30", "--retries", "5",
            "--fragment-retries", "5", "--file-access-retries", "3",
            "-f", job["format_id"], "-o", outtmpl, job["url"]]
-    # Don't force MP4: many sources provide better/native formats; yt-dlp merges when needed.
+    # Don't force MP4: many sources provide better/native formats; yt-dlp merges when needed.(ffmpeg required)
     try:
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                 text=True, bufsize=1)
