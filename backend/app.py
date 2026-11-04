@@ -54,7 +54,7 @@ def run_ytdlp_json(url):
         detail = (result.stderr or result.stdout or "Extractor failed").strip()[-1200:]
         raise RuntimeError(detail)
     return json.loads(result.stdout)
-
+ 
 def simplify_formats(info):
     formats = []
     for item in info.get("formats") or []:
